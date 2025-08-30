@@ -110,6 +110,9 @@ Automate patch generation easily:
 
 1. **Fork** this repo to your GitHub account.
 2. In your fork, create an `assets` folder at the root and **upload your APK files** there.
+   - If your APK files exceed GitHub's file size limits `(100 MB per file)`, you can upload them using `Git LFS (Large File Storage)`:
+   - Install Git LFS locally on your machine using git lfs install.
+   - Use git lfs track "*.apk" to track .apk files.Commit and push the APKs to your repo just like regular files, and Git LFS will handle large files for you.
 3. Go to the **Actions** tab in your forked repo.
 4. Select the **Kernel Manager Patcher** workflow.
 5. Click **Run workflow** > **Run** to start.
