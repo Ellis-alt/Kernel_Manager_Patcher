@@ -1,1 +1,7 @@
 **.apk filter=lfs diff=lfs merge=lfs -text
+assets/ksun.apk filter=lfs diff=lfs merge=lfs -text
+assets/mksu.apk filter=lfs diff=lfs merge=lfs -text
+assets/ogksu.apk filter=lfs diff=lfs merge=lfs -text
+assets/rksu.apk filter=lfs diff=lfs merge=lfs -text
+assets/sukisu.apk filter=lfs diff=lfs merge=lfs -text
+assets/bksu.apk filter=lfs diff=lfs merge=lfs -text

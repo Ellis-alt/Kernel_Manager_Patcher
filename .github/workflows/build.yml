@@ -1,0 +1,80 @@
+name: Kernel Manager Patcher
+run-name: Build Kernel Manager Patch
+
+on:
+  workflow_dispatch:
+  # push:
+  #   paths:
+  #     - 'assets/*.apk'
+  #     - 'patch.py'
+  #     - 'user_mapping.txt'
+  #     - '.github/workflows/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Set up environment
+        run: |
+          echo "📦 Installing system dependencies..."
+          sudo apt-get update
+          sudo apt-get install -y --install-recommends \
+            python3 \
+            python3-pip \
+            unzip \
+            wget \
+            google-android-cmdline-tools-11.0-installer \
+            openjdk-21-jre-headless || sudo apt-get install -y openjdk-17-jre-headless
+          which java
+          java --version
+
+          # Set up git config (needed for git commits in the script)
+          git config --global user.name "Uday"
+          git config --global user.email "fortecipher@gmai.com"
+
+          # Set Android SDK root and update PATH
+          echo "ANDROID_SDK_ROOT=$HOME/Android/Sdk" >> $GITHUB_ENV
+          echo "PATH=$HOME/Android/Sdk/build-tools/36.0.0:$PATH" >> $GITHUB_ENV
+
+          mkdir -p "$HOME/Android/Sdk"
+
+          echo "📦 Installing build-tools..."
+          # Accept Android SDK license automatically
+          yes | sdkmanager --licenses --sdk_root=$HOME/Android/Sdk || true
+          sdkmanager --sdk_root=$HOME/Android/Sdk --install "build-tools;36.0.0"
+
+          echo "🐍 Installing Python dependencies..."
+          pip3 install apksigcopier
+
+          chmod +x patch.py
+
+      - name: Run patch.py to generate patch
+        run: |
+          echo "=============================================="
+          echo "        RUNNING patch.py"
+          echo "=============================================="
+          python3 patch.py
+
+      - name: Upload patch artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ksu_more_manager_patch
+          path: output/ksu_more_manager.patch
+          if-no-files-found: error
+          retention-days: 7
+
+      - name: Upload meta and kernel directories
+        uses: actions/upload-artifact@v4
+        with:
+          name: biproducts
+          path: |
+            output/meta/
+            output/kernel/
+          if-no-files-found: ignore
+          retention-days: 7
