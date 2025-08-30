@@ -119,8 +119,7 @@ Automate patch generation easily:
 
 After the workflow completes successfully, download the generated patch (`ksu_more_manager.patch`) from the workflow artifacts.
 
-***Tip:**
-This lets you generate patches without any local setup, fully in the cloud!*
+> ***Tip:** This lets you generate patches without any local setup, fully in the cloud!*
 
 ### 🖥️ Local Setup & Usage
 Clone the repository:
